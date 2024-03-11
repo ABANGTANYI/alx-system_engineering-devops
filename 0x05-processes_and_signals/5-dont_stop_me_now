@@ -1,13 +1,3 @@
 #!/usr/bin/env bash
-
-# Run the 4-to_infinity_and_beyond script in the background
-./4-to_infinity_and_beyond &
-
-# Save the PID of the background process
-pid=$!
-
-# Wait for user input
-read -rp "Press enter to stop the process..."
-
-# Send SIGTERM signal to terminate the process
-kill "$pid"
+# This script kills a process using command kill
+kill "$(ps -x | pgrep -f beyond)"
