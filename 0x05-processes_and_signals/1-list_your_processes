@@ -1,8 +1,22 @@
 #!/usr/bin/env bash
-# This script displays a list of currently running processes
 
-# Header line
-echo "USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND"
+# Display the process header
+printf "%-10s %-5s %-4s %-6s %-6s %-6s %-6s %-8s %-6s %s\n" "USER" "PID" "%CPU" "%MEM" "VSZ" "RSS" "TTY" "STAT" "START" "COMMAND"
 
-# Retrieve process information using ps command and format the output
-ps axo user,pid,%cpu,%mem,vsz,rss,tty,stat,start,time,command | head -n 51
+# Iterate over all processes
+while read -r line; do
+    # Parse process information
+    user=$(echo "$line" | awk '{print $1}')
+    pid=$(echo "$line" | awk '{print $2}')
+    cpu=$(echo "$line" | awk '{print $3}')
+    mem=$(echo "$line" | awk '{print $4}')
+    vsz=$(echo "$line" | awk '{print $5}')
+    rss=$(echo "$line" | awk '{print $6}')
+    tty=$(echo "$line" | awk '{print $7}')
+    stat=$(echo "$line" | awk '{print $8}')
+    start=$(echo "$line" | awk '{print $9" "$10}')
+    command=$(echo "$line" | awk '{$1=$2=$3=$4=$5=$6=$7=$8=$9=""; print $0}')
+
+    # Display the process information
+    printf "%-10s %-5s %-4s %-6s %-6s %-6s %-6s %-8s %-6s %s\n" "$user" "$pid" "$cpu" "$mem" "$vsz" "$rss" "$tty" "$stat" "$start" "$command"
+done <<< "$(ps -e -o user,pid,%cpu,%mem,vsz,rss,tty,stat,start,command --no-headers)"
