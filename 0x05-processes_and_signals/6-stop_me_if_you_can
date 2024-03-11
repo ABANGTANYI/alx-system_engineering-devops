@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Run the 4-to_infinity_and_beyond script in the background
+./4-to_infinity_and_beyond &
+
+# Save the PID of the background process
+pid=$!
+
+# Wait for user input
+read -rp "Press enter to stop the process..."
+
+# Find the process ID of the parent shell
+parent_pid=$(ps -o ppid= -p "$pid")
+
+# Terminate the parent shell process
+kill -SIGTERM "$parent_pid"
