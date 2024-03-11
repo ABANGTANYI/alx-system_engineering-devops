@@ -1,33 +1,7 @@
 #!/usr/bin/env bash
+# This script displays list of currently running processes
+# Must show all processes, for all users, including those which might not have a TTY
+# Display a user-oriented format
+# Show process hierarchy
 
-# Function to display process hierarchy
-display_hierarchy() {
-    local pid=$1
-    local level=$2
-    local prefix=""
-    for ((i=0; i<level; i++)); do
-        prefix+="  "
-    done
-
-    # Print the process details
-    printf "%s└─ %s %s\n" "$prefix" "$(ps -o user:10,pid:5,%cpu:5,%mem:6,vsz:6,rss:6,tty:10,stat:5,start:10,comm:200 --no-headers -p $pid)" "$(tr -d '\0' < "/proc/$pid/cmdline")"
-
-    # Get the child processes of the current process
-    local children=$(pgrep -P $pid)
-
-    # Recursively display the hierarchy for each child process
-    for child in $children; do
-        display_hierarchy $child $((level+1))
-    done
-}
-
-# Print the header
-printf "%-10s %-5s %-5s %-6s %-6s %-6s %-10s %-5s %-10s %s\n" "USER" "PID" "%CPU" "%MEM" "VSZ" "RSS" "TTY" "STAT" "START" "COMMAND"
-
-# Get the root processes (parent process ID is 0)
-root_processes=$(pgrep -P 0)
-
-# Display the process hierarchy for each root process
-for root in $root_processes; do
-    display_hierarchy $root 0
-done
+ps -a -x -u -f
