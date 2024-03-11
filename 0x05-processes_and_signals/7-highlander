@@ -1,22 +1,11 @@
 #!/usr/bin/env bash
+# This script displays
+# to infinity and beyond indefinitely
+# With a sleep 2 in between each iteration
+# I am invincible!!! when receiving a SIGTERM signal
 
-# Run the 4-to_infinity_and_beyond or 7-highlander script in the background
-./4-to_infinity_and_beyond &  # or ./7-highlander &
-
-# Save the PID of the background process
-pid=$!
-
-# Function to handle SIGTERM signal
-handle_sigterm() {
-    echo "I am invincible!!!"
-    exit 0
-}
-
-# Register the SIGTERM signal handler
-trap handle_sigterm SIGTERM
-
-# Infinite loop
+trap 'echo "I am invincible!!!"' 15
 while true; do
-    echo "To infinity and beyond"
+    echo "to infinity and beyond"
     sleep 2
 done
