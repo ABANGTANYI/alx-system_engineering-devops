@@ -1,3 +1,4 @@
-#!/bin/bash
-
-ssh-keygen -t rsa -b 4096 -f school -C "abang@ubuntu"
+#!/usr/bin/env bash
+# Bash script that creates an RSA key pair
+#ssh-keygen -b 4096 -P abang -f school
+ssh-keygen -t rsa -b 4096 -P abang -f school
