@@ -1,17 +1,20 @@
 #!/usr/bin/python3
-"""Module for task 0"""
-
+"""
+    uses Reddit API to print the number of subscribers of a subreddit
+"""
+import requests
 
 def number_of_subscribers(subreddit):
-    """Queries the Reddit API and returns the number of subscribers
-    to the subreddit"""
-    import requests
+    """
+    Get the number of subscribers for a given subreddit
+    """
+    url = f"https://www.reddit.com/r/{subreddit}/about.json"
+    headers = {'User-Agent': 'Mozilla/5.0'}  # Set a custom User-Agent
 
-    sub_info = requests.get("https://www.reddit.com/r/{}/about.json"
-                            .format(subreddit),
-                            headers={"User-Agent": "My-User-Agent"},
-                            allow_redirects=False)
-    if sub_info.status_code >= 300:
+    response = requests.get(url, headers=headers, allow_redirects=False)
+    if response.status_code != 200:
         return 0
 
-    return sub_info.json().get("data").get("subscribers")
+    data = response.json().get("data")
+    num_subs = data.get("subscribers")
+    return num_subs
